@@ -1,14 +1,5 @@
 # Fibre
 
-- utilité d'une fibre
-- solutions alternatives (alignement direct, laser fixé)
-- exemple en 1P
-- différence en 2
-- techniques existantes de guidage 2P
-- guidage géométrique vs indice
-
-
-
 ## Introduction
 
 Pour faire fonctionner un microscope optique, il faut illuminer l'échantillon. Pour un éclairage en lumière blanche par transmission, une lampe est généralement combinée à un système optique tel que l'illumination de Köhler [1]. Pour la microscopie de fluorescence, on peut utiliser des sources comme les lampes à décharge qui émettent fortement à une longueur d'onde précise, mais on préfère aujourd'hui les lasers pour leur durée de vie, leur puissance, leur finesse spectrale et autres qualités. Il s'agit donc de guider un laser vers l'échantillon fluorescent de manière à réaliser l'imagerie.
@@ -37,15 +28,50 @@ Cette idée a également donné lieu aux fibres à réseau trihexagonal, ou "Kag
 
 Le processus de fabrication de ces fibres à réseau trihexagonal a très naturellement donné lieu à des fibres à "réseaux de tubes" qui ont révélé avoir de bonnes performances. L'analyse numérique de leur fonctionnement a révélé que la première couche du réseau de tube jouait un rôle important dans leurs propriétés [8], ce qui a permis l'apparition des fibres à "courbure négative", avec une géométrie très simple et de très bonnes caractéristiques. C'est cette configuration qui nous intéresse ici. Nous l'avons retenue pour sa large bande de transmission qui couvre à la fois le visible à 488 nm et l'infrarouge à 915 nm, son bon gain de ~100 dB/km, son couplage monomode dans l'infrarouge et sa relative stabilité par rapport aux déformations.
 
-## PCNC-FC-K13-001
+## PMC-C-9005 B2
 
 La fibre que j'ai utilisé pour coupler le laser femtoseconde dans notre microscope est un modèle de recherche et développement réalisé par l'entreprise [Glophotonics](http://www.glophotonics.fr/). Je commente ici certaines caractérisation fournies par le constructeur et y apporte des éléments supplémentaires relativement à la polarisation.
 
-- spectre
-- longueur fibre
-- transmission mesurée à 915nm
+![gain](./img/fiber_gain.png)
+
+> Ce spectre de transmission a été réalisé en lumière blanche. Il montre deux zones de transmission, l'une autour de 500nm, l'autre entre 800 nm et 1200 nm. Le gain y est autour de 100 dB/km, soit une transmission d'environ 97% à travers un mètre de fibre.
+
+### Injection d'un laser dans une fibre
+
+Pour injecter le laser dans la fibre, il faut aligner tous les éléments dans l'axe optique et régler finement les degrés de liberté en translation et en rotation. De plus, comme on souhaite un couplage monomode, il faut faire coincider le mode laser d'entrée de fibre avec le mode propre de la fibre. Le laser ayant un largeur initiale de D, il faut le ramener à une largeur de fibre ω (23 μm ± 1 μm d'après la documentation). Pour cela, il faut utiliser une lentille de focale f et satisfaire l'équation suivante :
+$$
+f = D\frac{\pi\omega}{4\lambda}
+$$
+La largeur d'un faisceau gaussien est définie par la fonction :
+$$
+w(z) = w_0 \, \sqrt{ 1+ {\left( \frac{z}{z_\mathrm{R}} \right)}^2 }
+$$
+avec
+$$
+z_\mathrm{R} = \frac{\pi w_0^2 }{\lambda}
+$$
+Le laser que j'utilise (Mai-Tai + Deepsee) est proche d'un faisceau gaussien (M²<1.1) et son waist (w0) est large d'environ 1 mm. Ces valeurs sont données par la documentation pour une utilisation à 800 nm, mais elles peuvent évoluer légèrement en accordant la longueur d'onde de fonctionnement. La largeur du laser est donc d'environ 2 mm après un mètre de propagation. En prenant D = 2 mm, ω = 23 µm, et à λ = 915 nm, on trouve donc f = 40 mm. J'ai donc utilisé une lentille de focale 40 mm (référence Thorlabs AC254-040-B-ML) avec un traitement de surface pour optimiser la transmission dans l'infrarouge.
+
+### Injection 2P
+
+J'ai fixé une extrémité de la fibre sur une platine de translation xyz à 40 mm de la lentille. Pour faciliter l'alignement, j'ai tout d'abord injecté un laser visible grâce à un connecteur fibre à fibre dans l'autre extrémité de la fibre. Cela m'a permis de pré-aligner deux miroirs sur support rotatifs en visant l'orifice du laser parallèlement à l'axe optique. En allumant le laser à faible puissance pour ne pas endomager la fibre, j'ai donc obtenu facilement une transmission suffisante pour pouvoir mesurer la puissance en sortie de fibre. À partir de cette étape, il suffit d'optimiser la puissance transmise en jouant sur les réglages. Dans un premier temps, les deux degrés de rotations de chacun des deux miroirs, et dans un deuxième temps, les deux degrés de rotation du second miroir et les trois degrés de translation de la platine. Cette technique permet d'obtenir en un temps raisonnable (~1h) une transmission optimale (~96%).
+
+![injection](./img/injection.svg)
+
+> schéma de l'injection à deux lasers dans la fibre. Le miroir M2 est amovible et permet de basculer entre l'injection 1P et 2P
+
+### Injection 1P
+
+Pour injecter un deuxième laser, il faut à nouveau faire coïncider le mode de la fibre avec celui du laser, mais en conservant la même lentille d'injection et sans utiliser la platine de translation. Il faut donc adapter la largeur du faisceau à l'aide d'un téléscope ou beam expander (BEX). En remplaçant 915 nm par 488 nm, on obtient D = 1 mm. La lentille étant optimisée pour l'infrarouge, sa transmission dans le bleu n'est que de 50%, mais la puissance du laser bleu est suffisante pour compenser cette perte. Par contre, la fibre n'est pas tout à fait monomode à cette longueur d'onde, et l'on distingue clairement en sortie le mode TEM11 ou les modes TEM10 / TEM01 en fonction de la position de la fibre. La meilleure transmission obtenue est de l'ordre de 50%, mais cela est suffisant pour l'imagerie statique (fibre immobile).
+
+La fibre a [dispersion]
+
+
+
+- 
 - carac polarisation
 - carac en situation réelle
+- 
 
 
 
@@ -56,7 +82,8 @@ La fibre que j'ai utilisé pour coupler le laser femtoseconde dans notre microsc
 - **HC-NCF** hollow core negative curvature fiber
 - **HC-MOF** hollow core microstructured optical fiber
 - **HC-TLF** hollow core tube lattice fiber
-- **HC-PBG-F** hollow core photonic-bandgap fiber
+- **PBG** photonic-bandgap
+- **PMC** photonic microcell
 
 
 
@@ -69,3 +96,4 @@ La fibre que j'ai utilisé pour coupler le laser femtoseconde dans notre microsc
 [7]: https://www.sci-hub.tw/10.1364/ol.31.000172 "Hollow-core microstructured polymer optical fiber"
 [8]: https://www.osapublishing.org/oe/abstract.cfm?URI=oe-18-22-23133 "Waveguiding mechanism in tube lattice fibers"
 [9]: https://www.sci-hub.tw/10.1364/cleo.2010.cpdb4 "Low loss broadband transmission in optimized core-shape Kagome Hollow-Core PCF"
+[10]: https://www.sci-hub.tw/10.1038/s41566-020-0633-x "Exceptional polarization purity in antiresonant hollow-core optical fibres"
