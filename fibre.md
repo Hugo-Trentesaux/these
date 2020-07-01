@@ -1,7 +1,5 @@
 # Fibre
 
-## Introduction
-
 Pour faire fonctionner un microscope optique, il faut illuminer l'échantillon. Pour un éclairage en lumière blanche par transmission, une lampe est généralement combinée à un système optique tel que l'illumination de Köhler [1]. Pour la microscopie de fluorescence, on peut utiliser des sources comme les lampes à décharge qui émettent fortement à une longueur d'onde précise, mais on préfère aujourd'hui les lasers pour leur durée de vie, leur puissance, leur finesse spectrale et autres qualités. Il s'agit donc de guider un laser vers l'échantillon fluorescent de manière à réaliser l'imagerie.
 
 Dans un microscope statique, la source laser peut être intégrée et guidée par des miroirs jusqu'à l'échantillon, mais dans le cas d'un microscope mobile ou d'une source laser encombrante, il faut une autre solution. C'est justement notre cas avec à la fois une source laser très volumineuse et un microscope mobile. La solution utilisée dans ce cas pour la microscopie un photon est la fibre optique. Nous allons voir son principe de fonctionnement et comment il peut s'appliquer à la microscopie deux photons.
@@ -34,14 +32,21 @@ La fibre que j'ai utilisé pour coupler le laser femtoseconde dans notre microsc
 
 ![gain](./img/fiber_gain.png)
 
-> Ce spectre de transmission a été réalisé en lumière blanche. Il montre deux zones de transmission, l'une autour de 500nm, l'autre entre 800 nm et 1200 nm. Le gain y est autour de 100 dB/km, soit une transmission d'environ 97% à travers un mètre de fibre.
+> Ce spectre de transmission de la fibre PMC-C-9005 B2 a été réalisé en lumière blanche. Il montre deux zones de transmission, l'une autour de 500nm, l'autre entre 800 nm et 1200 nm. Le gain y est autour de 100 dB/km, soit une transmission d'environ 97% à travers un mètre de fibre.
 
-### Injection d'un laser dans une fibre
+Une des particularités de cette fibre est sa large bande passante qui lui permet de transmettre à la fois de la lumière visible et de la lumière infrarouge. Dans mon cas, je l'utilise à la fois à 488 nm pour l'imagerie un photon et à 915 nm pour l'imagerie deux photons.
+
+## Injection d'un laser dans une fibre
 
 Pour injecter le laser dans la fibre, il faut aligner tous les éléments dans l'axe optique et régler finement les degrés de liberté en translation et en rotation. De plus, comme on souhaite un couplage monomode, il faut faire coincider le mode laser d'entrée de fibre avec le mode propre de la fibre. Le laser ayant un largeur initiale de D, il faut le ramener à une largeur de fibre ω (23 μm ± 1 μm d'après la documentation). Pour cela, il faut utiliser une lentille de focale f et satisfaire l'équation suivante :
 $$
 f = D\frac{\pi\omega}{4\lambda}
 $$
+
+## Injection 2P
+
+Le laser "Mai-Tai" que j'ai utilisé est proche d'un faisceau gaussien (M²<1.1) et son waist (w0) est large d'environ 1 mm. Ces valeurs sont données par la documentation pour une utilisation à 800 nm, mais elles peuvent évoluer légèrement en accordant la longueur d'onde de fonctionnement.
+
 La largeur d'un faisceau gaussien est définie par la fonction :
 $$
 w(z) = w_0 \, \sqrt{ 1+ {\left( \frac{z}{z_\mathrm{R}} \right)}^2 }
@@ -50,30 +55,85 @@ avec
 $$
 z_\mathrm{R} = \frac{\pi w_0^2 }{\lambda}
 $$
-Le laser que j'utilise (Mai-Tai + Deepsee) est proche d'un faisceau gaussien (M²<1.1) et son waist (w0) est large d'environ 1 mm. Ces valeurs sont données par la documentation pour une utilisation à 800 nm, mais elles peuvent évoluer légèrement en accordant la longueur d'onde de fonctionnement. La largeur du laser est donc d'environ 2 mm après un mètre de propagation. En prenant D = 2 mm, ω = 23 µm, et à λ = 915 nm, on trouve donc f = 40 mm. J'ai donc utilisé une lentille de focale 40 mm (référence Thorlabs AC254-040-B-ML) avec un traitement de surface pour optimiser la transmission dans l'infrarouge.
+La largeur du laser est donc d'environ 2 mm après un mètre de propagation. En prenant D = 2 mm, ω = 23 µm, et à λ = 915 nm, on trouve donc f = 40 mm, c'est pourquoi j'ai utilisé une lentille de focale 40 mm (référence Thorlabs AC254-040-B-ML). Cette lentille dispose également d'un traitement de surface pour optimiser la transmission dans l'infrarouge.
 
-### Injection 2P
-
-J'ai fixé une extrémité de la fibre sur une platine de translation xyz à 40 mm de la lentille. Pour faciliter l'alignement, j'ai tout d'abord injecté un laser visible grâce à un connecteur fibre à fibre dans l'autre extrémité de la fibre. Cela m'a permis de pré-aligner deux miroirs sur support rotatifs en visant l'orifice du laser parallèlement à l'axe optique. En allumant le laser à faible puissance pour ne pas endomager la fibre, j'ai donc obtenu facilement une transmission suffisante pour pouvoir mesurer la puissance en sortie de fibre. À partir de cette étape, il suffit d'optimiser la puissance transmise en jouant sur les réglages. Dans un premier temps, les deux degrés de rotations de chacun des deux miroirs, et dans un deuxième temps, les deux degrés de rotation du second miroir et les trois degrés de translation de la platine. Cette technique permet d'obtenir en un temps raisonnable (~1h) une transmission optimale (~96%).
+J'ai fixé une extrémité de la fibre sur une platine de translation xyz à 40 mm de la lentille. Pour faciliter l'alignement, j'ai tout d'abord injecté un laser visible grâce à un connecteur fibre à fibre dans l'autre extrémité. Cela m'a permis de pré-aligner deux miroirs sur support rotatifs en visant l'orifice du laser parallèlement à l'axe optique. En allumant le laser à faible puissance pour ne pas endomager la fibre, j'ai donc obtenu facilement une transmission suffisante pour pouvoir mesurer la puissance en sortie de fibre. À partir de cette étape, il suffit d'optimiser la puissance transmise en jouant sur les réglages. Dans un premier temps, les deux degrés de rotations de chacun des deux miroirs, et dans un deuxième temps, les deux degrés de rotation du second miroir et les trois degrés de translation de la platine. Cette technique permet d'obtenir en un temps raisonnable (~1h) une transmission optimale (~96%).
 
 ![injection](./img/injection.svg)
 
 > schéma de l'injection à deux lasers dans la fibre. Le miroir M2 est amovible et permet de basculer entre l'injection 1P et 2P
 
-### Injection 1P
+## Injection 1P
 
 Pour injecter un deuxième laser, il faut à nouveau faire coïncider le mode de la fibre avec celui du laser, mais en conservant la même lentille d'injection et sans utiliser la platine de translation. Il faut donc adapter la largeur du faisceau à l'aide d'un téléscope ou beam expander (BEX). En remplaçant 915 nm par 488 nm, on obtient D = 1 mm. La lentille étant optimisée pour l'infrarouge, sa transmission dans le bleu n'est que de 50%, mais la puissance du laser bleu est suffisante pour compenser cette perte. Par contre, la fibre n'est pas tout à fait monomode à cette longueur d'onde, et l'on distingue clairement en sortie le mode TEM11 ou les modes TEM10 / TEM01 en fonction de la position de la fibre. La meilleure transmission obtenue est de l'ordre de 50%, mais cela est suffisant pour l'imagerie statique (fibre immobile).
 
-La fibre a [dispersion]
+## Dispersion et pré-compensation
 
+Un paramètre important pour la transmission d'un laser pulsé est la dispersion. C'est celui qui nous force à utiliser des fibre à coeur creux et qui permet de conserver une impulsion aussi courte que possible. Mais la dispersion d'une fibre à coeur creux n'est pas nulle, elle est de l'ordre de 1 ps/nm/km (élargissement temporel / largeur spectrale / distance parcourue) comme on peut le voir sur la courbe.
 
+![dispersion](./img/fiber-dispersion.png)
 
-- 
-- carac polarisation
-- carac en situation réelle
-- 
+> profil de dispersion de la fibre PMC-C-9005 B2
 
+La largeur spectrale d'une impulsion est donnée par
+$$
+\Delta \lambda_t = \frac{\lambda^2}{c\Delta t}
+$$
+et vaut donc 28 nm. Pour une impulsion de 100 fs à 915 nm, cela donne un élargissement de l'ordre de 28 fs au bout d'un mètre de propagation dans la fibre, soit une perte de concentration de 30% et donc une perte d'effet deux photons de 50%. Heureusement, il est possible de pré-compenser cette dispersion à l'aide d'un système optique placé en amont de la fibre. Le laser "Mai-Tai" est justement accompagné d'un élément "Deepsee" qui permet une telle précompensation réglable de -8 900 à -24 500 fs² d'après la documentation.
 
+> The amount of dispersion, or GVD compensation, provided for each wavelength depends on the position of the DeepSee motor that moves optical material on a stage within the beam path.
+
+En mesurant la durée de l'impulsion en sortie de fibre à l'aide d'un autocorrélateur, on confirme que la précompensation permet de retrouver une impulsion de 100 fs dans l'échantillon.
+
+## Gain de courbure
+
+Un des facteurs qui peut affecter la transmissission de la fibre est sa courbure. Certaines fibres comme les fibres à cristaux photoniques Kagome sont très sensibles à la courbure. La première fibre que j'ai testée voyait ainsi varier sa transmission d'un facteur un à cinq en fonction de sa courbure. Puisque la rotation du microscope engendre des déformations de la fibre, on se retrouve avec un éclairage incident corrélé à la stimulation, ce qui crée un signal parasite. Si ce signal parasite dépasse environ 1%, le rapport signal à bruit devient trop faible, et les données ne sont plus analysables. Pour caractériser les pertes de transmission liées à la courbure, il suffit de placer un puissance-mètre en sortie de fibre et de faire varier la courbure.
+
+Des modèles numériques [2] [12] et des applications pratiques suggèrent que le gain évolue de manière inversement proportionelle au carré du rayon de courbure. J'ai observé la même tendance sur notre fibre.
+
+![gain](./img/fiber_bending.png)
+
+>A. schéma du setup de catactérisation
+>
+>B. gain en fonction de la courbure
+>
+>C. ellipticité en fonction de la courbure (quasi circulaire)
+>
+>D. angle de polarisation en fonction de la courbure (quasi linéaire)
+
+On constate que le gain lié à la courbure est bien similaire au modèle théorique. Les pertes par mètre de fibre restent cependant petites car autour de 0.1 dB (~2%) même pour un rayon assez court de 7 cm. De plus, un rayon de courbure si court est rarement atteint sur une longue section de fibre. Dans le pire des cas la fibre peut effectuer un 'U' de 5 cm de rayon sur une longueur de π × 5 cm soit 16 cm maximum, ce qui correspond à une perte inférieure à 5%, mais il est facile d'éviter cette situation en positionnant la fibre correctement. 
+
+## Polarisation
+
+Quand l'axe d'excitation est dans la même direction que l'axe d'observation, la polarisation incidente importe peu car le dipôle (l'échantillon, en l'occurence le fluorophore) oscille dans le plan orthogonal. Mais quand les deux sont perpandiculaires, tourner la polarisation peut faire varier la lumière collectée de 0 à 100%.
+
+![polarisation](./img/polarization_plane.svg)
+
+> a. Comme dans un microscope deux photons classique, la direction d'émission et de détection sont alignées, et la polarisation est dans le plan orthogonal. Quelle que soit la polarisation, la lumière détectée est toujours la même.
+>
+> b. Dans un microscope à feuille de lumière, la direction d'émission est dans le plan orthogonal à la détection. La direction de polarisation fait alors un angle α avec la direction de détection. Pour α = 90°, la lumière détectée est maximale, mais pour α = 0°, elle est nulle.
+
+Il est donc important de caractériser le comportement de la fibre par rapport à la polarisation. Deux cas sont donc à envisager : une rotation de la polarisation et un changement d'ellipticité. En mesurant l'orientation de la polarisation en sortie de fibre, j'ai montré que celle-ci pouvait tourner largement en fonction de la courbure de la fibre. Par exemple, entre un rayon de courbure de 15 cm et 25 cm, une polarisation linéaire peut tourner de 10°. À cause de l'anisotropie du rayonnement dipôlaire, une polarisation tournée de 90° fait chuter le signal de 100%. Une rotation de 10° fait chuter le signal de 17%. En pratique, il est difficile de mainenir la fibre parfaitement droite, et donc de minimiser la rotation de la polarisation, c'est pourquoi j'ai cherché à obtenir une polarisation invariante par rotation, c'est-à-dire une polarisation circulaire.
+
+En polarisation circulaire, la rotation n'est plus un problème, mais la fibre peut toujours transformer la polarisation circulaire en une polarisation elliptique, qui perd sa symétrie et devient donc sensible à la rotation. J'ai donc caractérisé la variation d'ellipticité dans le cas d'une polarisation circulaire. Pour cela, j'ai positionné deux puissance-mètre sur les bras d'un cube polariseur en sortie de fibre. Pour chaque courbure de fibre, je mesurais l'intensité minimale et l'intensité orthogonale, ce qui permet de déduire le grand axe (a) et le petit axe (b) de l'ellipse, et donc l'ellipticité (θ) définie par
+$$
+\tan(\theta)=\frac{b}{a} 
+$$
+Je montre que l'ellipticité peut varier de 5° entre deux courbures extrêmes. Pour une polarisation elliptique à 40°, la différence entre grand axe et petit axe est de 16%. Une rotation de 90° en polarisation elliptique avec cette ellipticité donnerait alors lieu à une variation de détection de 16%, ce qui est beaucoup mieux que 100%. Il est cependant nécessaire d'effectuer des tests en conditions réelles afin de vérifier que ce pire cas n'est pas atteint.
+
+## Test en condition réelle
+
+Pour tester les variations d'intensité dues aux déformations de la fibre en conditions réelles, j'ai monté un cube polariseur et un puissance-mètre à la place de l'échantillon et ai soumis l'ensemble à des stimulations périodiques guidées par un moteur.
+
+![variations](./img/real-condition_intensity-variation.png) 
+
+>**a.** Setup de test en condition réelle
+>
+>**b.** Réponse à une stimulation sinusoïdale périodique de 10°. On constate que les variations de puissance ne dépassent pas 0.6% et que ces variations combinées aux changement de la polarisation (ellipticité et rotation) n'excèdent pas 1.2%.
+>
+>**c.** Réponse à une stimulation périodique en marches de 20°. Les variations combinées n'excèdent pas 1.2%. On remarque que l'intensité maximale est atteinte pour un angle du moteur de 0°, soit la position de repos de la fibre.
+
+Finalement, tous les effets liés à la position de la fibre engendrent des variations de l'intensité détectée inférieurs à 1.2% dans les conditions des expériences. Les effets parasites sont donc connus et mineurs, ce qui est à prendre en compte lors de l'analyse des données.
 
 ## Lexique
 
@@ -97,3 +157,5 @@ La fibre a [dispersion]
 [8]: https://www.osapublishing.org/oe/abstract.cfm?URI=oe-18-22-23133 "Waveguiding mechanism in tube lattice fibers"
 [9]: https://www.sci-hub.tw/10.1364/cleo.2010.cpdb4 "Low loss broadband transmission in optimized core-shape Kagome Hollow-Core PCF"
 [10]: https://www.sci-hub.tw/10.1038/s41566-020-0633-x "Exceptional polarization purity in antiresonant hollow-core optical fibres"
+[11]: https://www.rp-photonics.com/dispersion_compensation.html "dispersion compensation"
+[12]: https://www.osapublishing.org/oe/abstract.cfm?uri=oe-21-3-3388 "Flexible tube lattice fibers for terahertz applications (bending loss)"

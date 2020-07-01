@@ -12,22 +12,15 @@ Intégration multisensorielle dans le cerveau des laves de poisson zèbre
 
 
 
-système vestibulaire
+**système sensoriel**
 
 - anatomie rapide chez l'humain
 - anatomie chez le poisson 
 - au cours du développement
+- système visuel
 - ... bibliographie
 
-
-
-système visuel
-
-- domaine électromagnétique de vision
-
-
-
-poisson zèbre
+**poisson zèbre**
 
 - animal modèle
 - larve 
@@ -36,14 +29,11 @@ poisson zèbre
   - échappement, capture de proie
   - réflexes oculaires, moteurs
 
-modifications génétiques
-
+- modifications génétiques
 - rapporteur calcique
 - lignées nucléaires, cytoplasmiques
 
-
-
-neurone
+**neurone**
 
 - cellule cytoplasme noyau
 - potentiel d'action
@@ -52,28 +42,24 @@ neurone
 - plasticité cérébrale
 - propriétés émergentes des réseaux de neurones
 
-
-
-microscopie feuille de lumière / nappe laser
+**microscopie feuille de lumière / nappe laser**
 
 - sectionnement vertical
 - vitesse d'acquisition (image par seconde, cerveau par seconde)
 - résolution spatiale temporelle
+- modèle miniaturisé
 
-
-
-microscopie deux photons
+**microscopie deux photons**
 
 - principe général, microscope classique
 - optique non linéaire
 - laser pulsé
 - nappe laser deux photons
-- - polarisation
-- - fibre
+- polarisation
+- fibre hollow core
+- effet de lentille thermique
 
-
-
-analyse
+**analyse**
 
 - correction du mouvement
 - analyse de Fourier *phasemap*
@@ -99,6 +85,7 @@ outils utilisés
 - Git
 - Inkscape
 - CMTK
+- viewer web, atlas
 
 publications scientifiques
 
