@@ -53,3 +53,84 @@ Pour effectuer le balayage, on déplace le faisceau horizontalement. Pour que l'
 Pour un temps d'exposition par couche de 10 ms en mode d'acquisition continu, on peut par exemple réaliser un scan du cerveau à 2,5 Hz en 30 couches espacées de 8µm. Cela permet d'imager la majeure partie du cerveau du poisson. Les couches les plus profondes sont moins nettes car le signal traverse plus de tissus avant d'atteindre l'objectif, et la zone située entre les yeux reste dans l'ombre si on n'utilise qu'un laser. Mais chaque neurone visible est imagé à une fréquence de 2.5 Hz.
 
 ## Imagerie deux photons
+
+L'absorption à deux photons est un phénomène non linéaire qui est négligeable aux petites énergies mais devient important pour une intensité lumineuse élevée. Elle peut se produire entre deux ondes de fréquence différente, mais on s'intéresse au cas particulier de deux ondes fréquences égales. Cet effet est proportionnel au carré de l'intensité lumineuse et est lié au caractère anharmonique du dipôle oscillant.
+
+![intensity](./img/gaussianbeamintensityboth.png)
+
+> comparaison du profil d'intensité (haut) et de son carré (bas). On voit que la zone concernée par l'effet deux photons et restreinte. (paramètres : indice optique 1.33, longueur d'onde 915 nm, waist 6.5 µm)
+
+La zone concernée par l'effet deux photons est donc restreinte. C'est un avantage dans la direction verticale, car cela permet un meilleur sectionnement optique (en particulier au bord, où la largeur du faisceau est supérieure à la taille d'un neurone), mais c'est également un inconvénient dans la direction de propagation, car la baisse d'intensité de part et d'autre du waist est plus importante (on le verra sur les images).
+
+Une grande intensité étant nécessaire pour produire l'effet deux photons, la focalisation décrite ci-dessus ne suffit pas, il faut également concentrer le faisceau dans la direction de propagation. Pour réaliser cette concentration, il faut produire des impulsions les plus courtes possibles. En effet, au lieu d'être répartie sur toute la longueur de propagation, la puissance d'un laser pulsé à 100 fs sera concentrée par petit paquets de 30 mm. Avec un taux de répétition de 80 MHz, la puissance moyenne d'une impulsion est alors multipliée par 125 (1/(100fs*80MHz)). Si l'on considère une impulsion à enveloppe gaussienne, la puissance crête vaut cette puissance moyenne multipliée par 
+$$
+2\sqrt{\frac{\ln(2)}{2\pi}} \ \simeq \ 0.939
+$$
+soit 117,4 W. À puissance moyenne constante, diviser par deux le taux de répétition multiplie par deux l'énergie d'une impulsion et par quatre l'effet deux photons. À énergie constante, diviser par deux la durée de l'impulsion multiplie par deux sa puissance, et par quatre l'effet deux photons. On voit donc qu'il est important de disposer d'un laser adapté et de conserver la durée de l'impulsion aussi courte que possible.
+
+## Effet de lentille thermique
+
+Un des problèmes auxquels j'ai été confronté est l'effet de lentille thermique. Lorsqu'un faisceau traverse un milieu absorbant, ce milieu chauffe sur la trajectoire du faisceau, ce qui change son indice optique. Le gradient d'indice ainsi formé dévie les rayons. Pour l'eau, à 915 nm, le changement d'indice est de l'ordre de -1.7e-4 par degré [1]. La température étant plus élevée au centre du faisceau, l'indice optique est plus faible, et donc la lentille équivalente est divergente. Deux effets apparaissent alors. D'une part un effet statique lié à la perte de focalisation du faisceau qui altère l'effet deux-photons, d'autre part un effet dynamique lié à la réponse du système à une perturbation de la température d'équilibre.
+
+Ce phénomène et a été décrit théoriquement en 1964 par Gordon *et al* [2] dans le cadre de l'approximation parabolique et étendu en 1974 par Whinnery *et al* [3]. En 1982, Sheldon *et al* [4] étend cette description hors de l'approximation parabolique pour prendre en compte les aberration induites. Je me contente ici de reprendre les mécaniques de bases de ces calculs pour appréhender l'amplitude des effets.
+
+La variation de la température *T(r,t)* est décrite par l'équation de diffusion :
+$$
+c\rho\frac{\partial}{\partial t}[\Delta T(r,t)] = \dot{q}(r) + k \nabla^2[\Delta T(r,t)]
+$$
+Le terme source de l'équation lié à l'absorption du faisceau de puissance *P* par le milieu de coefficient d'absorption α vaut :
+$$
+\dot{q}(r) = \frac{\alpha P}{\pi w^2}\exp(-2r^2/w^2)
+$$
+Ce qui donne une solution de la forme :
+$$
+\Delta T(r,t) = \frac{\alpha P}{4\pi k} \int_0^t \left( \frac{1}{1+2t'/t_c} \right) \exp \left( \frac{-2r^2/w^2}{1+2t'/t_c} \right) \mathrm{d}t'
+\\
+\text{où} \ t_c = \frac{w^2}{4D}
+$$
+Dans notre cas, on se contentera de l'approximation au premier ordre de cette solution :
+$$
+\Delta T(r,t) \simeq \frac{\alpha P}{4\pi k} \left[ \ln\left( 1+\frac{2t}{t_c} \right) - \frac{2(r^2/w^2)}{1+t_c/2t} \right]
+$$
+Et l'on peut donc écrire l'indice optique du milieu sous la forme :
+$$
+n = n_0 \left( 1+\delta \left(\frac{r}{w} \right)^2 \right)
+\\
+\text{où} \ \delta = \frac{\mathrm{d}n}{\mathrm{d}T}\Delta T
+$$
+D'autre part, pour un profil d'indice quadratique tel que celui-ci et dans l'approximation des lentilles fines, on peut définir la distance focale d'une tranche de liquide d'épaisseur *l*  :
+$$
+F = -\frac{w^2}{2ln_0\delta}
+$$
+Cela permet d'établir la valeur de la focale *F* au cours du temps :
+$$
+F(t) = F_\infty \left( 1 + \frac{t_c}{2t} \right)
+\\
+\text{où} \ F_\infty = \frac{\pi kw^2}{\alpha Pl(\mathrm{d}n/\mathrm{d}T)}
+$$
+
+
+ 
+
+---
+
+On voit ici émerger un temps caractéristique d'établissement de la température d'équilibre. Le papier donne une valeur de κ de l'eau égale à 14.2e-4, soit un temps caractéristique de 5 ms dans notre cas pour une tranche fine de liquide.
+
+---
+
+TODO appliquer cela à un milieu continu long
+
+
+
+
+
+
+
+
+
+
+
+[1]: https://en.wikipedia.org/wiki/Optical_properties_of_water_and_ice "propriétés optiques de l'eau"
+[2]: https://sci-hub.tw/10.1063/1.1713919 "Long‐Transient Effects in Lasers with Inserted Liquid Samples"
+[3]: https://sci-hub.tw/10.1021/ar50079a003 "Laser Measurement of Optical Absorption in Liquids "
+[4]: https://pdfs.semanticscholar.org/ac26/ad507bc2432a136433a53e734bf872e74f42.pdf "Laser-induced thermal lens effect: a new theoretical model"
