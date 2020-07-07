@@ -70,9 +70,9 @@ soit 117,4 W. À puissance moyenne constante, diviser par deux le taux de répé
 
 ## Effet de lentille thermique
 
-Un des problèmes auxquels j'ai été confronté est l'effet de lentille thermique. Lorsqu'un faisceau traverse un milieu absorbant, ce milieu chauffe sur la trajectoire du faisceau, ce qui change son indice optique. Le gradient d'indice ainsi formé dévie les rayons. Pour l'eau, à 915 nm, le changement d'indice est de l'ordre de -1.7e-4 par degré [1]. La température étant plus élevée au centre du faisceau, l'indice optique est plus faible, et donc la lentille équivalente est divergente. Deux effets apparaissent alors. D'une part un effet statique lié à la perte de focalisation du faisceau qui altère l'effet deux-photons, d'autre part un effet dynamique lié à la réponse du système à une perturbation de la température d'équilibre.
+Un des problèmes auxquels j'ai été confronté est l'effet de lentille thermique. Lorsqu'un faisceau traverse un milieu absorbant, ce milieu chauffe sur la trajectoire du faisceau, ce qui change son indice optique. Le gradient d'indice ainsi formé dévie les rayons. Pour l'eau, à 915 nm, le changement d'indice est de l'ordre de -1.7e-4 par degré [1]. La température étant plus élevée au centre du faisceau, l'indice optique est plus faible, et donc la lentille équivalente est divergente. Cet effet peut être utilisé pour mesurer le coefficient d'absorption d'un liquide [3], mais il a deux conséquences gênantes dans mon cas. D'une part un effet statique lié à la perte de focalisation du faisceau altère l'effet deux-photons, d'autre part un effet dynamique lié à la réponse du système à une perturbation de la température d'équilibre dévie le faisceau lors des mouvements du microscope.
 
-Ce phénomène et a été décrit théoriquement en 1964 par Gordon *et al* [2] dans le cadre de l'approximation parabolique et étendu en 1974 par Whinnery *et al* [3]. En 1982, Sheldon *et al* [4] étend cette description hors de l'approximation parabolique pour prendre en compte les aberration induites. Je me contente ici de reprendre les mécaniques de bases de ces calculs pour appréhender l'amplitude des effets.
+Le phénomène et a été décrit théoriquement en 1964 par Gordon *et al* [2] et en 1974 par Whinnery *et al* [3] pour une fine cellule de liquide et dans le cadre de l'approximation parabolique. En 1982, Sheldon *et al* [4] étend cette description hors de l'approximation parabolique pour prendre en compte les aberration induites. Je me contente ici de reprendre les mécaniques de bases de ces calculs pour appréhender l'amplitude des effets.
 
 La variation de la température *T(r,t)* est décrite par l'équation de diffusion :
 $$
@@ -109,20 +109,33 @@ F(t) = F_\infty \left( 1 + \frac{t_c}{2t} \right)
 \text{où} \ F_\infty = \frac{\pi kw^2}{\alpha Pl(\mathrm{d}n/\mathrm{d}T)}
 $$
 
+Cette valeur est valable pour une section mince de liquide, mais dans mon cas, le laser traverse une couche très épaisse (plusieurs centimètres). On peut donc chercher à étendre ce modèle en s'inspirant des approches utilisées pour les milieux à gradient d'indice (GRIN lens). Dans le livre *Gradient-Index Optics* (2002) [6], les auteurs s'intéressent à la propagation d'un faisceau dans un milieu d'indice d'indice égal à (équation 1.63) :
+$$
+n(r,z) = n_0(z) \left( 1 \pm \frac{g^2(z)}{2}r^2\right)
+$$
+Dans le cas d'un signe négatif (effet convergent), les calculs sont largement détaillés et aboutissent à une solution oscillante. Malheureusement le cas d'un signe positif n'est pas exploré. De plus, les solutions pour *n0(z)* non constant ne sont pas non plus détaillées. Pour obtenir un résultat en ordre de grandeur, nous avons donc opté pour un approche discrète numérique en utilisant la valeur trouvée précédemment pour la focale équivalente d'une tranche de liquide d'épaisseur *l*.
 
- 
+On part du principe que le faisceau reste gaussien tout au long du parcours, il peut donc être entièrement décrit pour chaque *z* par la position et la largeur de son waist. Pour chaque tranche de liquide, on peut donc écrire la formule des lentilles gaussiennes :
+
+![image-20200707200111943](/home/ljp/.config/Typora/typora-user-images/image-20200707200111943.png)
+
+![image-20200707200145334](/home/ljp/.config/Typora/typora-user-images/image-20200707200145334.png)
+
+
+
+> TODO à refaire au propre en français
+
+
+
+
+
+TODO la suite
 
 ---
 
 On voit ici émerger un temps caractéristique d'établissement de la température d'équilibre. Le papier donne une valeur de κ de l'eau égale à 14.2e-4, soit un temps caractéristique de 5 ms dans notre cas pour une tranche fine de liquide.
 
 ---
-
-TODO appliquer cela à un milieu continu long
-
-
-
-
 
 
 
@@ -134,3 +147,5 @@ TODO appliquer cela à un milieu continu long
 [2]: https://sci-hub.tw/10.1063/1.1713919 "Long‐Transient Effects in Lasers with Inserted Liquid Samples"
 [3]: https://sci-hub.tw/10.1021/ar50079a003 "Laser Measurement of Optical Absorption in Liquids "
 [4]: https://pdfs.semanticscholar.org/ac26/ad507bc2432a136433a53e734bf872e74f42.pdf "Laser-induced thermal lens effect: a new theoretical model"
+[5]: https://sci-hub.tw/10.1016/j.optcom.2009.12.047 "Nanostructured GRIN microlenses for Gaussian beam focusing"
+[6]: https://www.springer.com/fr/book/9783540421252 "Gradient-Index Optics"
