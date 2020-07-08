@@ -4,6 +4,8 @@ using Plots
 
 include("./gaussianbeam.jl")
 
+# optimal waist
+
 # width at 200 µm for several waist values 
 d = 200e-6
 waists = range(3e-6, 9e-6, length=1000)

@@ -98,15 +98,15 @@ n = n_0 \left( 1+\delta \left(\frac{r}{w} \right)^2 \right)
 \\
 \text{où} \ \delta = \frac{\mathrm{d}n}{\mathrm{d}T}\Delta T
 $$
-D'autre part, pour un profil d'indice quadratique tel que celui-ci et dans l'approximation des lentilles fines, on peut définir la distance focale d'une tranche de liquide d'épaisseur *l*  :
+D'autre part, pour un profil d'indice quadratique tel que celui-ci et dans l'approximation des lentilles minces, on peut définir la distance focale d'une tranche de liquide d'épaisseur *l*  :
 $$
-F = -\frac{w^2}{2ln_0\delta}
+f' = -\frac{w^2}{2ln_0\delta}
 $$
 Cela permet d'établir la valeur de la focale *F* au cours du temps :
 $$
-F(t) = F_\infty \left( 1 + \frac{t_c}{2t} \right)
+f'(t) = f'_\infty \left( 1 + \frac{t_c}{2t} \right)
 \\
-\text{où} \ F_\infty = \frac{\pi kw^2}{\alpha Pl(\mathrm{d}n/\mathrm{d}T)}
+\text{où} \ f'_\infty = \frac{\pi kw^2}{\alpha Pl(\mathrm{d}n/\mathrm{d}T)}
 $$
 
 Cette valeur est valable pour une section mince de liquide, mais dans mon cas, le laser traverse une couche très épaisse (plusieurs centimètres). On peut donc chercher à étendre ce modèle en s'inspirant des approches utilisées pour les milieux à gradient d'indice (GRIN lens). Dans le livre *Gradient-Index Optics* (2002) [6], les auteurs s'intéressent à la propagation d'un faisceau dans un milieu d'indice d'indice égal à (équation 1.63) :
@@ -115,15 +115,13 @@ n(r,z) = n_0(z) \left( 1 \pm \frac{g^2(z)}{2}r^2\right)
 $$
 Dans le cas d'un signe négatif (effet convergent), les calculs sont largement détaillés et aboutissent à une solution oscillante. Malheureusement le cas d'un signe positif n'est pas exploré. De plus, les solutions pour *n0(z)* non constant ne sont pas non plus détaillées. Pour obtenir un résultat en ordre de grandeur, nous avons donc opté pour un approche discrète numérique en utilisant la valeur trouvée précédemment pour la focale équivalente d'une tranche de liquide d'épaisseur *l*.
 
-On part du principe que le faisceau reste gaussien tout au long du parcours, il peut donc être entièrement décrit pour chaque *z* par la position et la largeur de son waist. Pour chaque tranche de liquide, on peut donc écrire la formule des lentilles gaussiennes :
-
-![image-20200707200111943](/home/ljp/.config/Typora/typora-user-images/image-20200707200111943.png)
-
-![image-20200707200145334](/home/ljp/.config/Typora/typora-user-images/image-20200707200145334.png)
+On part du principe que le faisceau reste gaussien tout au long du parcours, il peut donc être entièrement décrit pour chaque *z* par la position et la largeur de son waist. Pour chaque tranche de liquide d'épaisseur l, on peut donc écrire la formule des lentilles gaussiennes pour trouver le déplacement du waist et son élargissement.
 
 
 
-> TODO à refaire au propre en français
+\alpha = \frac{w_0'}{w_0} = \frac{|f'|}{\sqrt{(s+f')^2 + z_r^2}}
+
+
 
 
 
@@ -137,6 +135,36 @@ On voit ici émerger un temps caractéristique d'établissement de la températu
 
 ---
 
+
+
+## Conventions et formules
+
+
+
+![diverging lens](./img/diverginglens.png)
+
+> exemple d'application de l'optique gaussienne à une lentille divergente de focale -200 µm
+
+Conventions algébriques, où *O* est le centre de la lentille, *A* la position du waist objet, *A'* la position du waist image, *f'* la distance focale image de la lentille (*f'* > 0 pour une lentille convergente, *f'* < 0 pour une lentille divergente) :
+$$
+\overline{OA} = s
+\\
+\overline{OA'} = s'
+\\
+\overline{OF'} = f'
+$$
+Formule de conjugaison pour un lentille mince en optique géométrique :
+$$
+\frac{1}{s'} = \frac{1}{s} + \frac{1}{f'}
+$$
+Formule de conjugaison pour un lentille mince en optique gaussienne :
+$$
+\frac{1}{s'} = \frac{1}{s+\frac{z_r^2}{s+f'}} + \frac{1}{f'}
+$$
+Grossissement pour un faisceau gaussien :
+$$
+\alpha = \frac{w_0'}{w_0} = \frac{|f'|}{\sqrt{(s+f')^2 + z_r^2}}
+$$
 
 
 
