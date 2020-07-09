@@ -25,9 +25,11 @@ Cette lenteur est liée au fait de scanner un point sur une surface, mais on peu
 Le volume d'un cerveau de larve de poisson zèbre mesure 400 µm de largeur × 800 µm de longueur × 300 µm de hauteur et est situé sur le dessus de la larve. Afin de minimiser l'épaisseur de tissus traversée, on place donc l'objectif de détection sur la partie supérieure. Le laser peut donc être placé sur le côté. Les yeux sont très pigmentés et la lumière ne passe pas à travers, ce qui crée une zone d'ombre entre les yeux. Certains laboratoires qui sont intéressés par ces régions appartenant au télencéphale et au diencéphale peuvent donc ajouter un deuxième laser à l'avant pour éclairer cette région.
 
 Pour produire un faisceau laser le plus fin possible sur une longueur de 400 µm, il faut minimiser la largeur après 200 µm de propagation avec comme variable le waist w0 placé au milieu de l'échantillon :
+
 $$
 w(z) = w_0 \, \sqrt{ 1+ {\left( \frac{z}{z_\mathrm{R}} \right)}^2 } \qquad z_\mathrm{R} = \frac{n \pi w_0^2 }{\lambda}
 $$
+
 Un waist trop petit est trop divergeant, et donc trop large sur les bords, mais un waist trop large limite la résolution. Il faut donc donc trouver un optimum. La taille d'un neurone étant de 8 µm environ, des valeurs inférieures sont souhaitables.
 
 ![gaussianbeam](./img/gaussianbeamprofilewater.png)
@@ -62,10 +64,12 @@ L'absorption à deux photons est un phénomène non linéaire qui est négligeab
 
 La zone concernée par l'effet deux photons est donc restreinte. C'est un avantage dans la direction verticale, car cela permet un meilleur sectionnement optique (en particulier au bord, où la largeur du faisceau est supérieure à la taille d'un neurone), mais c'est également un inconvénient dans la direction de propagation, car la baisse d'intensité de part et d'autre du waist est plus importante (on le verra sur les images).
 
-Une grande intensité étant nécessaire pour produire l'effet deux photons, la focalisation décrite ci-dessus ne suffit pas, il faut également concentrer le faisceau dans la direction de propagation. Pour réaliser cette concentration, il faut produire des impulsions les plus courtes possibles. En effet, au lieu d'être répartie sur toute la longueur de propagation, la puissance d'un laser pulsé à 100 fs sera concentrée par petit paquets de 30 mm. Avec un taux de répétition de 80 MHz, la puissance moyenne d'une impulsion est alors multipliée par 125 (1/(100fs*80MHz)). Si l'on considère une impulsion à enveloppe gaussienne, la puissance crête vaut cette puissance moyenne multipliée par 
+Une grande intensité étant nécessaire pour produire l'effet deux photons, la focalisation décrite ci-dessus ne suffit pas, il faut également concentrer le faisceau dans la direction de propagation. Pour réaliser cette concentration, il faut produire des impulsions les plus courtes possibles. En effet, au lieu d'être répartie sur toute la longueur de propagation, la puissance d'un laser pulsé à 100 fs sera concentrée par petit paquets de 30 mm. Avec un taux de répétition de 80 MHz, la puissance moyenne d'une impulsion est alors multipliée par 125 (1/(100fs x 80MHz)). Si l'on considère une impulsion à enveloppe gaussienne, la puissance crête vaut cette puissance moyenne multipliée par 
+
 $$
 2\sqrt{\frac{\ln(2)}{2\pi}} \ \simeq \ 0.939
 $$
+
 soit 117,4 W. À puissance moyenne constante, diviser par deux le taux de répétition multiplie par deux l'énergie d'une impulsion et par quatre l'effet deux photons. À énergie constante, diviser par deux la durée de l'impulsion multiplie par deux sa puissance, et par quatre l'effet deux photons. On voit donc qu'il est important de disposer d'un laser adapté et de conserver la durée de l'impulsion aussi courte que possible.
 
 ## Effet de lentille thermique
@@ -75,34 +79,47 @@ Un des problèmes auxquels j'ai été confronté est l'effet de lentille thermiq
 Le phénomène et a été décrit théoriquement en 1964 par Gordon *et al* [2] et en 1974 par Whinnery *et al* [3] pour une fine cellule de liquide et dans le cadre de l'approximation parabolique. En 1982, Sheldon *et al* [4] étend cette description hors de l'approximation parabolique pour prendre en compte les aberration induites. Je me contente ici de reprendre les mécaniques de bases de ces calculs pour appréhender l'amplitude des effets.
 
 La variation de la température *T(r,t)* est décrite par l'équation de diffusion :
+
 $$
 c\rho\frac{\partial}{\partial t}[\Delta T(r,t)] = \dot{q}(r) + k \nabla^2[\Delta T(r,t)]
 $$
+
 Le terme source de l'équation lié à l'absorption du faisceau de puissance *P* par le milieu de coefficient d'absorption α vaut :
+
 $$
 \dot{q}(r) = \frac{\alpha P}{\pi w^2}\exp(-2r^2/w^2)
 $$
+
 Ce qui donne une solution de la forme :
+
 $$
 \Delta T(r,t) = \frac{\alpha P}{4\pi k} \int_0^t \left( \frac{1}{1+2t'/t_c} \right) \exp \left( \frac{-2r^2/w^2}{1+2t'/t_c} \right) \mathrm{d}t'
 \\
 \text{où} \ t_c = \frac{w^2}{4D}
 $$
+
 Dans notre cas, on se contentera de l'approximation au premier ordre de cette solution :
+
 $$
 \Delta T(r,t) \simeq \frac{\alpha P}{4\pi k} \left[ \ln\left( 1+\frac{2t}{t_c} \right) - \frac{2(r^2/w^2)}{1+t_c/2t} \right]
 $$
+
 Et l'on peut donc écrire l'indice optique du milieu sous la forme :
+
 $$
 n = n_0 \left( 1+\delta \left(\frac{r}{w} \right)^2 \right)
 \\
 \text{où} \ \delta = \frac{\mathrm{d}n}{\mathrm{d}T}\Delta T
 $$
+
 D'autre part, pour un profil d'indice quadratique tel que celui-ci et dans l'approximation des lentilles minces, on peut définir la distance focale d'une tranche de liquide d'épaisseur *l*  :
+
 $$
 f' = -\frac{w^2}{2ln_0\delta}
 $$
+
 Cela permet d'établir la valeur de la focale *F* au cours du temps :
+
 $$
 f'(t) = f'_\infty \left( 1 + \frac{t_c}{2t} \right)
 \\
@@ -110,19 +127,14 @@ f'(t) = f'_\infty \left( 1 + \frac{t_c}{2t} \right)
 $$
 
 Cette valeur est valable pour une section mince de liquide, mais dans mon cas, le laser traverse une couche très épaisse (plusieurs centimètres). On peut donc chercher à étendre ce modèle en s'inspirant des approches utilisées pour les milieux à gradient d'indice (GRIN lens). Dans le livre *Gradient-Index Optics* (2002) [6], les auteurs s'intéressent à la propagation d'un faisceau dans un milieu d'indice d'indice égal à (équation 1.63) :
+
 $$
 n(r,z) = n_0(z) \left( 1 \pm \frac{g^2(z)}{2}r^2\right)
 $$
+
 Dans le cas d'un signe négatif (effet convergent), les calculs sont largement détaillés et aboutissent à une solution oscillante. Malheureusement le cas d'un signe positif n'est pas exploré. De plus, les solutions pour *n0(z)* non constant ne sont pas non plus détaillées. Pour obtenir un résultat en ordre de grandeur, nous avons donc opté pour un approche discrète numérique en utilisant la valeur trouvée précédemment pour la focale équivalente d'une tranche de liquide d'épaisseur *l*.
 
 On part du principe que le faisceau reste gaussien tout au long du parcours, il peut donc être entièrement décrit pour chaque *z* par la position et la largeur de son waist. Pour chaque tranche de liquide d'épaisseur l, on peut donc écrire la formule des lentilles gaussiennes pour trouver le déplacement du waist et son élargissement.
-
-
-
-\alpha = \frac{w_0'}{w_0} = \frac{|f'|}{\sqrt{(s+f')^2 + z_r^2}}
-
-
-
 
 
 
@@ -146,6 +158,7 @@ On voit ici émerger un temps caractéristique d'établissement de la températu
 > exemple d'application de l'optique gaussienne à une lentille divergente de focale -200 µm
 
 Conventions algébriques, où *O* est le centre de la lentille, *A* la position du waist objet, *A'* la position du waist image, *f'* la distance focale image de la lentille (*f'* > 0 pour une lentille convergente, *f'* < 0 pour une lentille divergente) :
+
 $$
 \overline{OA} = s
 \\
@@ -153,15 +166,21 @@ $$
 \\
 \overline{OF'} = f'
 $$
+
 Formule de conjugaison pour un lentille mince en optique géométrique :
+
 $$
 \frac{1}{s'} = \frac{1}{s} + \frac{1}{f'}
 $$
+
 Formule de conjugaison pour un lentille mince en optique gaussienne :
+
 $$
 \frac{1}{s'} = \frac{1}{s+\frac{z_r^2}{s+f'}} + \frac{1}{f'}
 $$
+
 Grossissement pour un faisceau gaussien :
+
 $$
 \alpha = \frac{w_0'}{w_0} = \frac{|f'|}{\sqrt{(s+f')^2 + z_r^2}}
 $$
