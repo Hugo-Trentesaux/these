@@ -24,17 +24,11 @@ Intégration multisensorielle dans le cerveau des laves de poisson zèbre
 ### axones, dendrites
 ### plasticité cérébrale
 ### propriétés émergentes des réseaux de neurones
-## microscopie
-### principe général, microscope classique
-### microscopie feuille de lumière / nappe laser
-#### sectionnement vertical
-#### vitesse d'acquisition (image par seconde, cerveau par seconde)
-#### résolution spatiale temporelle
-#### modèle miniaturisé
-### microscopie deux photons
-#### effet de lentille thermique
-#### optique non linéaire
-#### laser pulsé
+## ~ microscopie
+### description light sheet miniature
+
+### caractérisation en conditions réelles
+
 ## x fibre hollow core
 ## Outils
 ### Caméra synchronous readout

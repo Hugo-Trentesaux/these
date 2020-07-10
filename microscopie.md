@@ -58,7 +58,7 @@ Pour effectuer le balayage, on déplace le faisceau horizontalement. Pour que l'
 
 Pour un temps d'exposition par couche de 10 ms en mode d'acquisition continu, on peut par exemple réaliser un scan du cerveau à 2,5 Hz en 30 couches espacées de 8µm. Cela permet d'imager la majeure partie du cerveau du poisson. Les couches les plus profondes sont moins nettes car le signal traverse plus de tissus avant d'atteindre l'objectif, et la zone située entre les yeux reste dans l'ombre si on n'utilise qu'un laser. Mais chaque neurone visible est imagé à une fréquence de 2.5 Hz.
 
-## Imagerie deux photons
+## Effet deux photons
 
 L'absorption à deux photons est un phénomène non linéaire qui est négligeable aux petites énergies mais devient important pour une intensité lumineuse élevée. Elle peut se produire entre deux ondes de fréquence différente, mais on s'intéresse au cas particulier de deux ondes fréquences égales. Cet effet est proportionnel au carré de l'intensité lumineuse et est lié au caractère anharmonique du dipôle oscillant.
 
@@ -75,6 +75,8 @@ $$
 $$
 
 soit 117,4 W. À puissance moyenne constante, diviser par deux le taux de répétition multiplie par deux l'énergie d'une impulsion et par quatre l'effet deux photons. À énergie constante, diviser par deux la durée de l'impulsion multiplie par deux sa puissance, et par quatre l'effet deux photons. On voit donc qu'il est important de disposer d'un laser adapté et de conserver la durée de l'impulsion aussi courte que possible.
+
+L'effet deux photons, et plus généralement multiphoton, donne lieu à une méthode de sectionnement optique verticale alternative à la microscopie confocale. Un faisceau laser focalisé excite la fluorescence en un point, ensuite balayé sur le volume observé. La zone d'excitation est plus petite en microscopie deux et trois photons qu'en microscopie un photon car la chute de puissance hors du point de focalisation est proportionnelle respectivement au carré et au cube de l'intensité. Cela permet d'obtenir une zone d'excitation plus petit malgré une longueur d'onde plus élevée.
 
 ## Effet de lentille thermique
 
@@ -96,36 +98,43 @@ $$
 Le terme source de l'équation lié à l'absorption du faisceau de puissance *P* par le milieu de coefficient d'absorption α vaut :
 
 $$
-\dot{q}(r) = \frac{\alpha P}{\pi w^2(z)}\exp \left(\frac{-2r^2}{w^2(z)} \right)
+\dot{q}(r) = \frac{\alpha P}{\pi w^2_z}\exp \left(\frac{-2r^2}{w^2_z} \right)
 $$
 
 Ce qui donne une solution de la forme :
 
 $$
-\Delta T(r,t) = \frac{\alpha P}{4\pi k} \int_0^t \left( \frac{1}{1+2t'/t_c} \right) \exp \left( \frac{-2r^2/w^2}{1+2t'/t_c} \right) \mathrm{d}t'
+\Delta T(r,t) = \frac{\alpha P}{4\pi k} \int_0^t \left( \frac{1}{1+2t'/t_c} \right) \exp \left( \frac{-2r^2/w_z^2}{1+2t'/t_c} \right) \mathrm{d}t'
 \\
-\text{où} \ t_c = \frac{w^2}{4D}
+\text{où} \ t_c = \frac{w_z^2}{4D}
 $$
 
 Dans notre cas, on se contentera de l'approximation au premier ordre de cette solution :
 
 $$
-\Delta T(r,t) \simeq \frac{\alpha P}{4\pi k} \left[ \ln\left( 1+\frac{2t}{t_c} \right) - \frac{2(r^2/w^2)}{1+t_c/2t} \right]
-\\
-\Delta T(r,t_\infty) \simeq -\frac{\alpha P}{2\pi k}\frac{r^2}{w^2(z)}
+\Delta T(r,t) \simeq \frac{\alpha P}{4\pi k} \left[ \ln\left( 1+\frac{2t}{t_c} \right) - \frac{2(r^2/w_z^2)}{1+t_c/2t} \right]
 $$
 
-Si l'on suppose constante la variation thermique de l'indice optique, on a donc :
-
+Le premier terme est indépendant de *r* et correspond au réchauffement progressif global de la tranche de liquide. De plus, il est de plus en plus lent à mesure que l'on s'éloigne du waist et se retrouve dominé par les conditions aux limites et par la diffusion le long de l'axe ici non exprimées. On peut donc l'ignorer pour simplifier le calcul sans altérer le résultat. On a donc :
 $$
-n(r,z) = n_0 \left( 1+ \delta r^2 \right)
+\Delta T(r,t) = \Delta T_\infty \frac{1}{1+t_c/2t}
 \\
-\text{où} \ \delta = \frac{\mathrm{d}n}{\mathrm{d}T} \frac{\Delta T}{w^2(z)}
+\text{où} \ \Delta T_\infty = \Delta T(r,t_\infty) = -\frac{\alpha P}{2\pi k}\frac{r^2}{w_z^2}
+$$
+
+
+Si l'on suppose constant le coefficient de variation de l'indice optique (*dn/dT*), on a donc un profil d'indice quadratique en *r* :
+$$
+n(r,z) = n_0 + \frac{\mathrm{d}n}{\mathrm{d}T}\Delta T
+\\
+n(r,z) = n_0 \left( 1+ \delta (r/w_z)^2 \right)
+\\
+\text{où} \ \delta = - \frac{\mathrm{d}n}{\mathrm{d}T} \frac{\alpha P}{2\pi kn_0} \frac{2}{1+t_c/2t}
 $$
 
 Pour un profil d'indice quadratique tel que celui-ci et dans l'approximation des lentilles minces, on peut définir la distance focale équivalente :
 $$
-f' = -\frac{w^2(z)}{2ln_0\delta}
+f' = -\frac{w^2_z}{2ln_0\delta}
 $$
 
 Cela permet d'établir la valeur de la focale *F* au cours du temps :
@@ -133,7 +142,7 @@ Cela permet d'établir la valeur de la focale *F* au cours du temps :
 $$
 f'(t) = f'_\infty \left( 1 + \frac{t_c}{2t} \right)
 \\
-\text{où} \ f'_\infty = \frac{\pi kw^2}{\alpha Pl(\mathrm{d}n/\mathrm{d}T)}
+\text{où} \ f'_\infty = \frac{\pi k w_z^2}{\alpha Pl(\mathrm{d}n/\mathrm{d}T)}
 $$
 
 On part du principe que le faisceau reste gaussien tout au long du parcours, il peut donc être entièrement décrit pour chaque *z* par la position et la largeur de son waist. Pour chaque tranche de liquide d'épaisseur l, on peut donc écrire la formule des lentilles gaussiennes pour trouver le déplacement du waist et son élargissement.
@@ -179,6 +188,7 @@ Grossissement pour un faisceau gaussien :
 $$
 \alpha = \frac{w_0'}{w_0} = \frac{|f'|}{\sqrt{(s+f')^2 + z_r^2}}
 $$
+
 
 
 
