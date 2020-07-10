@@ -35,6 +35,10 @@ Un waist trop petit est trop divergeant, et donc trop large sur les bords, mais 
 ![gaussianbeam](./img/gaussianbeamprofilewater.png)
 
 > on voit ici le profil gaussien à 488 nm et à 915 nm dans l'eau pour différentes valeurs du waist. Le trait épais marque la position optimale pour un faisceau de 400 µm de long.
+>
+> TODO show zero
+>
+> and used value is 3 µm
 
 Le waist optimum pour un échantillon de 400 µm est de 5 µm à 488 nm et de 6.5 µm à 915 nm. La largeur du faisceau à 488 nm vaut donc au mieux 5 µm au centre et 7 µm sur les bords du cerveau. À 915 nm c'est 6.5 µm au centre et 9.5 µm sur les bords mais il faut aussi prendre en compte l'effet deux photons. En pratique, la plupart des neurones sont situés entre -150 µm et +150 µm, donc un waist légèrement plus petit est également acceptable.
 
@@ -74,11 +78,16 @@ soit 117,4 W. À puissance moyenne constante, diviser par deux le taux de répé
 
 ## Effet de lentille thermique
 
-Un des problèmes auxquels j'ai été confronté est l'effet de lentille thermique. Lorsqu'un faisceau traverse un milieu absorbant, ce milieu chauffe sur la trajectoire du faisceau, ce qui change son indice optique. Le gradient d'indice ainsi formé dévie les rayons. Pour l'eau, à 915 nm, le changement d'indice est de l'ordre de -1.7e-4 par degré [1]. La température étant plus élevée au centre du faisceau, l'indice optique est plus faible, et donc la lentille équivalente est divergente. Cet effet peut être utilisé pour mesurer le coefficient d'absorption d'un liquide [3], mais il a deux conséquences gênantes dans mon cas. D'une part un effet statique lié à la perte de focalisation du faisceau altère l'effet deux-photons, d'autre part un effet dynamique lié à la réponse du système à une perturbation de la température d'équilibre dévie le faisceau lors des mouvements du microscope.
+Un des problèmes auxquels j'ai été confronté est l'effet de lentille thermique (thermal lens effect). Lorsqu'un faisceau traverse un milieu absorbant, ce milieu chauffe sur la trajectoire du faisceau, ce qui change son indice optique. Le gradient d'indice ainsi formé dévie les rayons, formant une lentille à gradient d'indice (GRIN lens). Pour l'eau, à 915 nm, le changement d'indice est de l'ordre de -1e-4 par degré [1]. La température étant plus élevée au centre du faisceau, l'indice optique est plus faible, et donc la lentille équivalente est divergente. Cet effet peut être utile, par exemple pour mesurer le coefficient d'absorption d'un liquide [3], mais il a deux conséquences gênantes dans mon cas. D'une part un effet statique lié à la perte de focalisation du faisceau altère l'effet deux-photons, d'autre part un effet dynamique lié à la réponse du système à une perturbation de la température d'équilibre dévie le faisceau lors des mouvements du microscope.
 
-Le phénomène et a été décrit théoriquement en 1964 par Gordon *et al* [2] et en 1974 par Whinnery *et al* [3] pour une fine cellule de liquide et dans le cadre de l'approximation parabolique. En 1982, Sheldon *et al* [4] étend cette description hors de l'approximation parabolique pour prendre en compte les aberration induites. Je me contente ici de reprendre les mécaniques de bases de ces calculs pour appréhender l'amplitude des effets.
+Le phénomène et a été décrit théoriquement en 1964 par Gordon *et al* [2] et en 1974 par Whinnery *et al* [3] pour une fine cellule de liquide et dans le cadre de l'approximation parabolique. En 1982, Sheldon *et al* [4] étend cette description hors de l'approximation parabolique pour prendre en compte les aberration induites. Dans notre cas, il ne s'agit pas d'une cellule fine, car le laser traverse plusieurs centimètres d'eau avant d'atteindre l'échantillon, créant un gradient d'indice sur sa trajectoire. Je suis donc allé m'inspirer du livre *Gradient-Index Optics* (2002) [6], dans lequel les auteurs s'intéressent à la propagation d'un faisceau dans un milieu d'indice : (équation 1.63 du livre)
+$$
+n(r,z) = n_0(z) \left( 1 \pm \frac{g^2(z)}{2}r^2\right)
+$$
 
-La variation de la température *T(r,t)* est décrite par l'équation de diffusion :
+Dans le cas d'un signe négatif (lentille convergente), les calculs sont largement détaillés et aboutissent à une solution oscillante. Malheureusement le cas d'un signe positif (lentille divergente) n'est pas exploré. Pour obtenir un résultat en ordre de grandeur, nous avons donc opté pour un approche discrète numérique en appliquant à chaque tranche de liquide d'épaisseur *l* les résultats obtenus pour une cellule fine [2,3]. Cette approximation ignore la diffusion thermique le long de l'axe.
+
+Le différentiel de température par rapport à l'équilibre *ΔT(r,t)* est décrit par l'équation de diffusion :
 
 $$
 c\rho\frac{\partial}{\partial t}[\Delta T(r,t)] = \dot{q}(r) + k \nabla^2[\Delta T(r,t)]
@@ -87,7 +96,7 @@ $$
 Le terme source de l'équation lié à l'absorption du faisceau de puissance *P* par le milieu de coefficient d'absorption α vaut :
 
 $$
-\dot{q}(r) = \frac{\alpha P}{\pi w^2}\exp(-2r^2/w^2)
+\dot{q}(r) = \frac{\alpha P}{\pi w^2(z)}\exp \left(\frac{-2r^2}{w^2(z)} \right)
 $$
 
 Ce qui donne une solution de la forme :
@@ -102,20 +111,21 @@ Dans notre cas, on se contentera de l'approximation au premier ordre de cette so
 
 $$
 \Delta T(r,t) \simeq \frac{\alpha P}{4\pi k} \left[ \ln\left( 1+\frac{2t}{t_c} \right) - \frac{2(r^2/w^2)}{1+t_c/2t} \right]
-$$
-
-Et l'on peut donc écrire l'indice optique du milieu sous la forme :
-
-$$
-n = n_0 \left( 1+\delta \left(\frac{r}{w} \right)^2 \right)
 \\
-\text{où} \ \delta = \frac{\mathrm{d}n}{\mathrm{d}T}\Delta T
+\Delta T(r,t_\infty) \simeq -\frac{\alpha P}{2\pi k}\frac{r^2}{w^2(z)}
 $$
 
-D'autre part, pour un profil d'indice quadratique tel que celui-ci et dans l'approximation des lentilles minces, on peut définir la distance focale d'une tranche de liquide d'épaisseur *l*  :
+Si l'on suppose constante la variation thermique de l'indice optique, on a donc :
 
 $$
-f' = -\frac{w^2}{2ln_0\delta}
+n(r,z) = n_0 \left( 1+ \delta r^2 \right)
+\\
+\text{où} \ \delta = \frac{\mathrm{d}n}{\mathrm{d}T} \frac{\Delta T}{w^2(z)}
+$$
+
+Pour un profil d'indice quadratique tel que celui-ci et dans l'approximation des lentilles minces, on peut définir la distance focale équivalente :
+$$
+f' = -\frac{w^2(z)}{2ln_0\delta}
 $$
 
 Cela permet d'établir la valeur de la focale *F* au cours du temps :
@@ -126,28 +136,13 @@ f'(t) = f'_\infty \left( 1 + \frac{t_c}{2t} \right)
 \text{où} \ f'_\infty = \frac{\pi kw^2}{\alpha Pl(\mathrm{d}n/\mathrm{d}T)}
 $$
 
-Cette valeur est valable pour une section mince de liquide, mais dans mon cas, le laser traverse une couche très épaisse (plusieurs centimètres). On peut donc chercher à étendre ce modèle en s'inspirant des approches utilisées pour les milieux à gradient d'indice (GRIN lens). Dans le livre *Gradient-Index Optics* (2002) [6], les auteurs s'intéressent à la propagation d'un faisceau dans un milieu d'indice d'indice égal à (équation 1.63) :
-
-$$
-n(r,z) = n_0(z) \left( 1 \pm \frac{g^2(z)}{2}r^2\right)
-$$
-
-Dans le cas d'un signe négatif (effet convergent), les calculs sont largement détaillés et aboutissent à une solution oscillante. Malheureusement le cas d'un signe positif n'est pas exploré. De plus, les solutions pour *n0(z)* non constant ne sont pas non plus détaillées. Pour obtenir un résultat en ordre de grandeur, nous avons donc opté pour un approche discrète numérique en utilisant la valeur trouvée précédemment pour la focale équivalente d'une tranche de liquide d'épaisseur *l*.
-
 On part du principe que le faisceau reste gaussien tout au long du parcours, il peut donc être entièrement décrit pour chaque *z* par la position et la largeur de son waist. Pour chaque tranche de liquide d'épaisseur l, on peut donc écrire la formule des lentilles gaussiennes pour trouver le déplacement du waist et son élargissement.
 
+TODO simulation numérique
 
+TODO analyse temporelle
 
-
-TODO la suite
-
----
-
-On voit ici émerger un temps caractéristique d'établissement de la température d'équilibre. Le papier donne une valeur de κ de l'eau égale à 14.2e-4, soit un temps caractéristique de 5 ms dans notre cas pour une tranche fine de liquide.
-
----
-
-
+TODO comparaison avec données
 
 ## Conventions et formules
 

@@ -42,7 +42,7 @@ function magnification(s,fprime,zr)
     # s algebric distance object-lens
     # fprime lens focal length
     # zr Rayleigh length
-    return abs(fprime) / sqrt( (s+fprime)^2 + zr^2 )                    
+    return abs(fprime) / sqrt( (s+fprime)^2 + zr^2 )
 end
 
 # algebric distance image-lens
