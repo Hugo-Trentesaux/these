@@ -153,6 +153,10 @@ On part du principe que le faisceau reste gaussien tout au long du parcours, il 
 
 On peut mesurer expérimentalement la position de cette largeur minimum du faisceau dans la fluorescine.
 
+![shift](./img/thermal-shift.svg)
+
+> on voit ici une feuille de lumière imagée dans la fluorescine pour plusieurs puissances laser différentes. La position du maximum d'intensité, et donc de la largeur minimale, est marquée par un trait en pointillé
+
 ![profile](./code/gaussian-beam/grinlensplots_model.png)
 
 > voici la comparaison entre les données numériques et expérimentales
