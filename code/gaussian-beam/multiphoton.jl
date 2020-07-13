@@ -1,8 +1,3 @@
-using Plots
-
-# include variables and function definitions
-
-include("./gaussianbeam.jl")
 
 # multiphon intensity
 

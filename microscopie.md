@@ -32,7 +32,7 @@ $$
 
 Un waist trop petit est trop divergeant, et donc trop large sur les bords, mais un waist trop large limite la résolution. Il faut donc donc trouver un optimum. La taille d'un neurone étant de 8 µm environ, des valeurs inférieures sont souhaitables.
 
-![gaussianbeam](./img/gaussianbeamprofilewater.png)
+![gaussianbeam](./code/gaussian-beam/possible-waist.png)
 
 > on voit ici le profil gaussien à 488 nm et à 915 nm dans l'eau pour différentes valeurs du waist. Le trait épais marque la position optimale pour un faisceau de 400 µm de long.
 >
@@ -62,7 +62,7 @@ Pour un temps d'exposition par couche de 10 ms en mode d'acquisition continu, on
 
 L'absorption à deux photons est un phénomène non linéaire qui est négligeable aux petites énergies mais devient important pour une intensité lumineuse élevée. Elle peut se produire entre deux ondes de fréquence différente, mais on s'intéresse au cas particulier de deux ondes fréquences égales. Cet effet est proportionnel au carré de l'intensité lumineuse et est lié au caractère anharmonique du dipôle oscillant.
 
-![intensity](./img/gaussianbeamintensityboth.png)
+![intensity](./code/gaussian-beam/profile-intensity.png)
 
 > comparaison du profil d'intensité (haut) et de son carré (bas). On voit que la zone concernée par l'effet deux photons et restreinte. (paramètres : indice optique 1.33, longueur d'onde 915 nm, waist 6.5 µm)
 
@@ -87,7 +87,7 @@ $$
 n(r,z) = n_0(z) \left( 1 \pm \frac{g^2(z)}{2}r^2\right)
 $$
 
-Dans le cas d'un signe négatif (lentille convergente), les calculs sont largement détaillés et aboutissent à une solution oscillante. Malheureusement le cas d'un signe positif (lentille divergente) n'est pas exploré. Pour obtenir un résultat en ordre de grandeur, nous avons donc opté pour un approche discrète numérique en appliquant à chaque tranche de liquide d'épaisseur *l* les résultats obtenus pour une cellule fine [2,3]. Cette approximation ignore la diffusion thermique le long de l'axe.
+Dans le cas d'un signe négatif (lentille convergente), les calculs sont largement détaillés et aboutissent à une solution oscillante. Malheureusement le cas d'un signe positif (lentille divergente) n'est pas exploré. Pour obtenir un résultat en ordre de grandeur, nous avons donc opté pour un approche discrète numérique en appliquant à chaque tranche de liquide d'épaisseur *l* les résultats obtenus pour une cellule fine [2,3]. Cette approximation ignore la diffusion thermique le long de l'axe et considère l'absorption négligeable.
 
 Le différentiel de température par rapport à l'équilibre *ΔT(r,t)* est décrit par l'équation de diffusion :
 
@@ -147,17 +147,29 @@ $$
 
 On part du principe que le faisceau reste gaussien tout au long du parcours, il peut donc être entièrement décrit pour chaque *z* par la position et la largeur de son waist. Pour chaque tranche de liquide d'épaisseur l, on peut donc écrire la formule des lentilles gaussiennes pour trouver le déplacement du waist et son élargissement.
 
-TODO simulation numérique
+![profile](./code/gaussian-beam/grinlensplots_profile.png)
+
+> On voit ici le résultat de la simulation pour plusieurs puissances de laser. Comme attendu, plus la puissance est élevée, plus l'effet divergent est fort, et donc plus le waist est éloigné et large.
+
+On peut mesurer expérimentalement la position de cette largeur minimum du faisceau dans la fluorescine.
+
+![profile](./code/gaussian-beam/grinlensplots_model.png)
+
+> voici la comparaison entre les données numériques et expérimentales
+
+
 
 TODO analyse temporelle
 
-TODO comparaison avec données
+
+
+
 
 ## Conventions et formules
 
 
 
-![diverging lens](./img/diverginglens.png)
+![diverging lens](./code/gaussian-beam/lens.png)
 
 > exemple d'application de l'optique gaussienne à une lentille divergente de focale -200 µm
 
