@@ -209,7 +209,7 @@ $$
 
 
 
-
+## Références
 
 [1]: https://en.wikipedia.org/wiki/Optical_properties_of_water_and_ice "propriétés optiques de l'eau"
 [2]: https://sci-hub.tw/10.1063/1.1713919 "Long‐Transient Effects in Lasers with Inserted Liquid Samples"
