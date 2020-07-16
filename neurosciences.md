@@ -30,15 +30,30 @@ Dans certaines conditions, le neurone connaît un phénomène de dépolarisation
 
 La plupart des synapses fonctionnent à l'aide de neurotransmetteurs. On nomme ainsi les molécules dont le rôle est de transmettre le signal à travers la jonction synaptique. Ils sont libérés dans l'espace inter-synaptique lors de l'arrivée d'un potentiel d'action dans le neurone pré-synaptique. Des récepteurs spécifiques situés sur la membrane post-synaptique laissent rentrer des ions calcium en leur présence, ce qui assure la transmission du signal.
 
-Il existe plusieurs types de neurotransmetteurs qui peuvent avoir un effet inhibiteur ou excitateur sur le neurone post-synaptique. On compte parmi eux plusieurs acides aminés (glycine, glutamate..) et d'autres molécules proches (GABA, dopamine, adrénaline, noradrénaline, sérotonine, acétylcholine...). Leurs effets peuvent être très caractéristiques et spécifiques à certaines populations de neurones. On parle ainsi de neurones gabaergiques, dopaminergiques...
-
-
+Il existe plusieurs types de neurotransmetteurs qui peuvent avoir un effet inhibiteur ou excitateur sur le neurone post-synaptique. On compte parmi eux plusieurs acides aminés (glycine, glutamate..) et d'autres molécules proches (GABA, dopamine, adrénaline, noradrénaline, sérotonine, acétylcholine...). Certains sont également des neuromodulateurs, c'est-à-dire que leur fonction ne se limite pas à la transmission synaptique, ils peuvent se lier avec des récepteurs métabotropes entraînant des réactions cellulaires autre que l'ouverture de canaux ioniques. Les neurotransmetteurs peuvent concerner spécifiquement certaines populations de neurones, on parle par exemple de neurones gabaergiques, dopaminergiques... Leur présence peut être révélée à l'aide d'anticorps liés à une protéine fluorescente, ce qui permet d'identifier des zones spécifiques. Le Z-brain atlas permet par exemple de visualiser l'emplacement des neurones à sérotonine (5HT), GABA, dopamine, glycine, glutamate... Les distinguer est important car ils montrent des comportements très différents [5]. Par exemple, chez l'humain, la sérotonine est impliquée dans les humeurs, la dopamine joue un rôle dans la motivation, l'adrénaline est reliée à l'effort physique...
 
 ## Le neurone chimique
 
-TODO neurotransmetteurs
+Comme dit précédemment, chaque cellule crée une différence de potentiel entre le milieu intracellulaire et extracellulaire. Ce potentiel électrochimique est une source d'énergie qui sert de moteur aux processus chimiques transmembranaires. Pour chaque ion, on peut donc écrire l'équation du potentiel membranaire (équation de Nernst) :
+$$
+V_m = - \frac{RT}{z_iF} \ln \left(\frac{[I]_{\text{extra}}}{[I]_{\text{intra}}}\right)
+$$
 
-TODO concentration des ions
+
+
+
+
+
+TODO concentration des ions équilibre / dépolarisation
+
+| Ion                                                          | Concentration intracellulaire (mmol/l) | Concentration extracellulaire (mmol/l) | Rapport | Potentiel d'équilibre d'après l'[équation de Nernst](https://fr.wikipedia.org/wiki/Équation_de_Nernst) |
+| ------------------------------------------------------------ | -------------------------------------- | -------------------------------------- | ------- | ------------------------------------------------------------ |
+| Na+                                                          | 20                                     | 140                                    | 1:7     | env. +51 mV                                                  |
+| K+                                                           | 150                                    | 4                                      | 38:1    | -97 mV                                                       |
+| Ca2+                                                         | 1e-4                                   | 1.8                                    |         | +120 mV                                                      |
+| Cl-                                                          | 20                                     | 100                                    |         | -42 mV                                                       |
+| HCO3-                                                        | 8-10                                   | 26-28                                  |         | -27 mV                                                       |
+| Protéine [anionique](https://fr.wikipedia.org/wiki/Anion) (chargée négativement) | 155                                    | 5                                      |         | -75 mV                                                       |
 
 
 
@@ -84,3 +99,4 @@ Others
 [2]: https://www.sciencedirect.com/science/article/abs/pii/0166223696100485 "Calcium signaling in glial cells (1996)"
 [3]: https://science.sciencemag.org/content/277/5332/1684.1.abstract "Synaptic Efficacy Enhanced by Glial Cells in Vitro (1997)"
 [4]: https://www.sciencedirect.com/science/article/abs/pii/S0960077920303507 "Astrocyte-induced intermittent synchronization of neurons in a minimal network"
+[5]: https://www.cell.com/cell/fulltext/S0092-8674(17)31243-6 "Ancestral Circuits for the Coordinated Modulation of Brain State (MultiMAP: registering brain-wide cellular-resolution dynamics with molecular identity)"

@@ -24,12 +24,12 @@ title!("beam profiles")
 xlabel!("position in tank (mm)")
 ylabel!("beam width at 1/e (µm)")
 
-savefig("grinlensplots_profile.png")
+# savefig("grinlensplots_profile.png")
 
 
 # === waist position model vs experiments ===
 pows = 0.2:0.01:0.4
-P = map(p -> Parameters(P=p, l=1e-6, w0=4e-6, n=1.33), pows)
+P = map(p -> Parameters(P=p, l=1e-6, w0=4e-6, n=1), pows)
 p = P[1]
 O = propagate.(P)
 
@@ -45,4 +45,4 @@ title!("propagation in absorbing medium")
 xlabel!("laser power (W)")
 ylabel!("focal shift (mm)")
 
-savefig("grinlensplots_model.png")
+# savefig("grinlensplots_model.png")
