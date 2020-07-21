@@ -145,7 +145,7 @@ Finalement, tous les effets liés à la position de la fibre engendrent des vari
 - **PBG** photonic-bandgap
 - **PMC** photonic microcell
 
-
+## Références
 
 [1]: https://fr.wikipedia.org/wiki/Illumination_de_K%C3%B6hler "Illumination de Köhler"
 [2]: https://purehost.bath.ac.uk/ws/files/138814746/07225120.pdf "Negative Curvature Hollow-Core Optical Fiber"
