@@ -1,0 +1,9 @@
+[submodule "code/Hodgkin-Huxley/pyhh"]
+	path = code/Hodgkin-Huxley/pyhh
+	url = https://github.com/swharden/pyHH.git
+[submodule "code/Hodgkin-Huxley/code/Hodgkin-Huxley/pyhh_repo"]
+	path = code/Hodgkin-Huxley/code/Hodgkin-Huxley/pyhh_repo
+	url = https://github.com/swharden/pyHH.git
+[submodule "code/Hodgkin-Huxley/pyhh_repo"]
+	path = code/Hodgkin-Huxley/pyhh_repo
+	url = https://github.com/swharden/pyHH.git
